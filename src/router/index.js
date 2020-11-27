@@ -5,6 +5,11 @@ import Home from '../views/Home.vue'
 Vue.use(VueRouter)
 
 const routes = [
+    //如果为'/home'则重定向为根目录'/'
+  {
+    path: '/home',
+    redirect:'/'
+  },
   {
     path: '/',
     name: 'Home',
