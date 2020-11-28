@@ -1,23 +1,20 @@
 <template>
   <div id="app">
-    <navBar></navBar>
-    <module></module>
-    <!--<div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>-->
+    <nav-bar></nav-bar>
+    <router-view></router-view>
+    <bottom-nav></bottom-nav>
   </div>
 </template>
 
 <script>
-  import navBar from "./components/navBar";
-  import module from "./components/module";
+  import NavBar from "./components/Nav/NavBar";
+  import BottomNav from './components/BottomNav/BottomNav';
+
   export default {
     name:'app',
     components:{
-      navBar,
-      module
+      'nav-bar': NavBar,
+      'bottom-nav':BottomNav
     }
   }
 </script>
@@ -26,6 +23,7 @@
     padding: 0;
     margin: 0;
   }
+
   .el-dialog__header{
     padding: 0;
   }

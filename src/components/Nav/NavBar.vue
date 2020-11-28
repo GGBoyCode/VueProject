@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-bar">
+  <div class="NavBar">
     <el-row type="flex" justify="center" style="background-color:#545c64;">
 
      <el-col :span="24" class="hidden-sm-and-up">
@@ -43,7 +43,7 @@
             </el-submenu>
             <el-menu-item index="3" disabled>模块三</el-menu-item>
             <el-menu-item index="4"><a href="javascript:;">模块四</a></el-menu-item>
-            <template v-if="true">
+            <template v-if="false">
               <el-submenu style="float: right" index="5">
                 <template slot="title">模块五</template>
                 <el-menu-item index="5-1">选项1</el-menu-item>
@@ -54,11 +54,10 @@
               <el-menu-item style="float: right" index="6">模块六</el-menu-item>
               <el-menu-item style="float: right" index="7">模块七</el-menu-item>
             </template>
-           <!-- <template v-else>
-              <el-menu-item style="cursor: auto;float: right">
-
-              </el-menu-item>
-            </template>-->
+          <template v-else>
+              <el-menu-item style="cursor: auto;float: right" @click="$refs.mod.visible = true">登录/注册</el-menu-item>
+              <module ref = "mod"></module>
+            </template>
           </el-menu>
         </div>
       </el-col>
@@ -67,13 +66,19 @@
 </template>
 
 <script>
+  import Module from './Module';
+
   export default {
-    name: 'nav-bar',
+    name: 'NavBar',
     data() {
       return {
         navIndexOfPc: '1',
         navIndexOfPho:'1',
+        visible: false
       }
+    },
+    components:{
+      'module': Module
     }
   }
 </script>
