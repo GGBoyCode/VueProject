@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import Recommend from '../components/Home/Recommend'
+    import Recommend from './Recommend'
     export default {
         name: "Home",
         data(){
