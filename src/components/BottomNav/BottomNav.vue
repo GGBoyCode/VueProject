@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import LinkText from "./LinkText";
+    import LinkText from "../common/LinkText";
     export default {
         name: "ButtonNav",
         data(){
