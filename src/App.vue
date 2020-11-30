@@ -1,16 +1,16 @@
 <template>
   <div id="app">
     <nav-bar></nav-bar>
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     <bottom-nav></bottom-nav>
   </div>
 </template>
 
 <script>
-  import NavBar from "./components/Nav/NavBar";
-  import BottomNav from './components/BottomNav/BottomNav';
+  import NavBar from "./components/nav/NavBar";
+  import BottomNav from './components/bottomNav/BottomNav';
 
   export default {
     name:'app',
