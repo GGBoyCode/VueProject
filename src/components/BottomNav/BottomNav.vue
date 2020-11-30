@@ -3,32 +3,11 @@
         <el-row class="footer" type="flex" justify="center">
             <el-col :span="18">
                 <el-row class="list" type="flex" align="middle">
-                    <el-col :span="6" style="text-align: center">
-                        <h4>条目一</h4>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                    </el-col>
-
-                    <el-col :span="6" style="text-align: center">
-                        <h4>条目二</h4>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                    </el-col>
-
-                    <el-col :span="6" style="text-align: center">
-                        <h4>条目三</h4>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                    </el-col>
-
-                    <el-col :span="6" style="text-align: center">
-                        <h4>条目四</h4>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                        <div><el-link :underline="false">条目相关</el-link></div>
-                        <div><el-link :underline="false">条目相关</el-link></div>
+                    <el-col :span="6" style="text-align: center" v-for="title in titles">
+                        <h4 style="color: #ffffff">{{title}}</h4>
+                        <div><link-text href="#" :underline=true>条目相关</link-text></div>
+                        <div><link-text href="#" :underline=true>条目相关</link-text></div>
+                        <div><link-text href="#" :underline=true>条目相关</link-text></div>
                     </el-col>
                 </el-row>
             </el-col>
@@ -37,14 +16,23 @@
 </template>
 
 <script>
+    import LinkText from "./LinkText";
     export default {
-        name: "ButtonNav"
+        name: "ButtonNav",
+        data(){
+            return {
+                titles:['条目一','条目二','条目三','条目四']
+            };
+        },
+        components:{
+            LinkText
+        }
     }
 </script>
 
 <style scoped>
     .footer{
-        background: #DCDFE6;
+        background: rgb(84, 92, 100);
     }
 
     .list{

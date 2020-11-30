@@ -1,30 +1,31 @@
 <template>
     <a
-        :style="{color:defaultColor}"
+        :class="{'text-underline':underline}"
+        :style="isFocus?{color:actionColor}:{color:defaultColor}"
         :href="disabled ? null : href"
         v-bind="$attrs"
-        @click="handleClick",
+        @mouseover="isFocus = true"
+        @mouseout="isFocus = false"
     >
 
         <i :class="icon" v-if="icon"></i>
-
-        <span v-if="$slots.default" class="el-link--inner">
-      <slot></slot>
-    </span>
-
-        <template v-if="$slots.icon"><slot v-if="$slots.icon" name="icon"></slot></template>
+        <slot></slot>
     </a>
 </template>
 
 <script>
-
     export default {
-        name: 'ElLink',
+        name: 'LinkText',
 
+        data(){
+            return {
+              isFocus:false
+            };
+        },
         props: {
             underline: {
                 type: Boolean,
-                default: true
+                default: false
             },
             defaultColor: {
                 type: String,
@@ -32,24 +33,26 @@
             },
             actionColor: {
                 type: String,
-                default: 'red'
+                default: 'rgb(255, 208, 75)'
             },
             disabled: Boolean,
             href: String,
             icon: String,
-
         },
 
         methods: {
-            handleClick(event) {
-                if (!this.disabled) {
-                    if (!this.href) {
-                        this.$emit('click', event);
-                    }
-                }
-            },
-
 
         }
     };
 </script>
+
+<style scoped>
+    a{
+        font-weight: 500;
+        font-size: 14px;
+    }
+    .text-underline{
+        text-decoration: none;
+    }
+
+</style>
