@@ -46,6 +46,14 @@
                                     </el-switch>
                                 </el-col>
                             </el-row>
+                            <!--地址设置-->
+                            <el-row style="height: 50px" type="flex" align="middle">
+                                <el-col :span="6">
+                                    <p style="color: #909399;font-size: 14px">我的地址</p>
+                                </el-col>
+                                <el-col :span="12">四川省成都市...</el-col>
+                                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary">修改地址</el-button></el-col>
+                            </el-row>
                         </div>
 
                         <div style="margin-top: 20px">

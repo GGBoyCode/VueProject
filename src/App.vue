@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <nav-bar></nav-bar>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <bottom-nav></bottom-nav>
   </div>
 </template>
@@ -23,7 +25,6 @@
     padding: 0;
     margin: 0;
   }
-
   .el-dialog__header{
     padding: 0;
   }

@@ -84,8 +84,10 @@
       link(url){
         this.$router.push(url);
       },
-      linkReplace(url){
-        this.$router.replace(url);
+      linkReplace(url,index){
+        if(this.$route.path != url){
+          this.$router.replace(url);
+        }
       }
     }
   }
