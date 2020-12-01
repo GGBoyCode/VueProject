@@ -34,7 +34,7 @@
             style="border: none"
             text-color="#fff"
             active-text-color="#ffd04b">
-            <el-menu-item index="/">模块一</el-menu-item>
+            <el-menu-item index="/">首页</el-menu-item>
             <el-submenu index="" disabled>
               <template slot="title">模块二</template>
               <el-menu-item >选项1</el-menu-item>
@@ -45,7 +45,7 @@
             <el-menu-item index="" disabled>模块三</el-menu-item>
             <el-menu-item index="" disabled><a href="javascript:;">模块四</a></el-menu-item>
             <template v-if="true">
-              <el-menu-item index="/profile" style="float: right" >模块五</el-menu-item>
+              <el-menu-item index="/profile" style="float: right" >user</el-menu-item>
             </template>
           <template v-else>
               <el-menu-item style="cursor: auto;float: right" @click="$refs.mod.visible = true">登录/注册</el-menu-item>
@@ -82,4 +82,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+
 </style>

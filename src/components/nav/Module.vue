@@ -1,6 +1,7 @@
 <template>
   <div class="Module">
     <el-dialog
+        class="my-dialog"
       :visible.sync="visible"
       width="25%"
       :show-close="false"
@@ -56,5 +57,7 @@
 </script>
 
 <style scoped>
-
+    .my-dialog /deep/ .el-dialog__header {
+        padding: 0;
+    }
 </style>

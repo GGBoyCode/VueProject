@@ -25,7 +25,4 @@
     padding: 0;
     margin: 0;
   }
-  .el-dialog__header{
-    padding: 0;
-  }
 </style>
