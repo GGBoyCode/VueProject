@@ -93,9 +93,5 @@
 </script>
 
 <style scoped>
-    .el-main{
-        margin-left: 30px;
-        background-color: #f6f6f6;
-        min-height: 500px;
-    }
+
 </style>

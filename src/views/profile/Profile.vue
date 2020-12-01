@@ -33,6 +33,7 @@
     }
     .el-main{
         margin-left: 30px;
+        box-shadow: 0 0 3px #909399;
         min-height: 600px;
     }
 </style>
