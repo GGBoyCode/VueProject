@@ -1,5 +1,5 @@
 <template>
-    <div id="ButtonBav">
+    <div id="ButtonNav">
         <el-row class="footer" type="flex" justify="center">
             <el-col :span="18">
                 <el-row class="list" type="flex" align="middle">

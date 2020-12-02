@@ -2,7 +2,9 @@
   <div id="app">
     <nav-bar></nav-bar>
       <keep-alive>
-        <router-view></router-view>
+        <div class="main">
+          <router-view></router-view>
+        </div>
       </keep-alive>
     <bottom-nav></bottom-nav>
   </div>
@@ -24,5 +26,19 @@
   *{
     padding: 0;
     margin: 0;
+  }
+
+  html,body{
+    height: 100%;
+  }
+
+  #app{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .main{
+    flex: 1 0 auto;
   }
 </style>
