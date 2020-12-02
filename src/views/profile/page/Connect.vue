@@ -9,13 +9,13 @@
             </el-col>
         </el-row>
 
-        <el-dialog class="dialog" width="35%" title="收货地址" :center="true" :visible.sync="visible">
+        <el-dialog class="dialog" width="35%" title="收货地址" :center="true" :visible.sync="visible" @close="reset('feedbackForm')">
             <div class="dialog-body">
-                <el-form :model="feedbackFrom">
-                    <el-form-item label="联系邮箱" label-width="70px">
+                <el-form ref="feedbackForm" :model="feedbackFrom" :rules="rules">
+                    <el-form-item label="联系邮箱" prop="email" label-width="70px">
                         <el-input v-model="feedbackFrom.email" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="问题内容" label-width="70px">
+                    <el-form-item label="问题内容" prop="content" label-width="70px">
                         <el-input
                             type="textarea"
                             :rows="4"
@@ -25,8 +25,8 @@
                 </el-form>
             </div>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button @click="visible = false">取 消</el-button>
+                <el-button type="primary" @click="submit('feedbackForm')">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -50,6 +50,24 @@
     export default {
         name: "Connect",
         data(){
+            let validateEmail = function (rule, value, callback) {
+                if(value === ''){
+                  callback(new Error('请填写您的邮箱'))
+                } else if(!value.match(/^[a-z0-9]+([._\\\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/)){
+                    callback(new Error('请填写正确的邮箱'));
+                } else {
+                    callback();
+                }
+            }
+
+            let validateTextarea = function(rule, value, callback) {
+                if(value === ''){
+                    callback(new Error('请填写问题内容'));
+                } else {
+                    callback();
+                }
+            }
+
             return {
                 visible:false,
                 feedback:[
@@ -57,9 +75,31 @@
                 ],
                 feedbackFrom:{
                     email: '',
-                    connect: ''
+                    content: ''
+                },
+                rules: {
+                    email: [
+                        { validator: validateEmail, trigger: 'blur' }
+                    ],
+                    content: [
+                        { validator: validateTextarea, trigger: 'blur'}
+                    ]
                 }
             };
+        },
+        methods: {
+            submit(formName){
+                this.$refs[formName].validate(valid => {
+                    if(valid){
+                        console.log('submit');
+                        this.visible = false;
+                    }
+                });
+            },
+
+            reset(formName){
+                this.$refs[formName].resetFields();
+            }
         }
     }
 </script>

@@ -19,8 +19,11 @@
                 <el-col :span="6">
                     <p style="color: #909399;font-size: 14px">昵称</p>
                 </el-col>
-                <el-col :span="12">用户名</el-col>
-                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary">修改昵称</el-button></el-col>
+                <el-col :span="12"v-if="settings.nickname">
+                    <el-input :value="$store.state.user.nickname" @input="changeInformation" :clearable="true"></el-input>
+                </el-col>
+                <el-col :span="12"v-else>{{$store.state.user.nickname}}</el-col>
+                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary" @click="settings.nickname = !settings.nickname">{{settings.nickname?'保存':'修改昵称'}}</el-button></el-col>
             </el-row>
             <!--性别设置-->
             <el-row style="height: 50px" type="flex" align="middle">
@@ -30,7 +33,7 @@
                 <el-col :span="18">
                     <el-switch
                             style="display: block;"
-                            v-model="sex"
+                            :value="$store.state.user.sex"
                             active-color="#13ce66"
                             inactive-color="#ff4949"
                             active-text="男"
@@ -43,7 +46,7 @@
                 <el-col :span="6">
                     <p style="color: #909399;font-size: 14px">我的地址</p>
                 </el-col>
-                <el-col :span="12">四川省成都市...</el-col>
+                <el-col :span="12">{{$store.state.user.address}}</el-col>
                 <el-col :span="6"><el-button style="float: right;" size="mini" type="primary">修改地址</el-button></el-col>
             </el-row>
         </div>
@@ -55,7 +58,7 @@
                     <p style="color: #909399;font-size: 14px">手机账号</p>
                 </el-col>
                 <el-col :span="12">
-                    18180443372
+                    {{$store.state.user.telephone}}
                 </el-col>
                 <el-col :span="6"><el-button style="float: right;" size="mini" type="primary">更换手机</el-button></el-col>
             </el-row>
@@ -65,7 +68,7 @@
                     <p style="color: #909399;font-size: 14px">绑定邮箱</p>
                 </el-col>
                 <el-col :span="12">
-                    1770061644@qq.com
+                    {{$store.state.user.email}}
                 </el-col>
                 <el-col :span="6"><el-button style="float: right;" size="mini" type="primary">更换邮箱</el-button></el-col>
             </el-row>
@@ -86,9 +89,21 @@
         name: "AccountSetting",
         data(){
             return {
-                sex:true
+                sex:true,
+                settings:{
+                    nickname: false,
+                    address: false,
+                    telephone: false,
+                    email: false
+                }
             }
         },
+
+        methods: {
+            changeInformation(value){
+                this.$store.commit('changeNickname',value);
+            }
+        }
     }
 </script>
 
