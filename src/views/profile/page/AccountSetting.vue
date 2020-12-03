@@ -20,10 +20,10 @@
                     <p style="color: #909399;font-size: 14px">昵称</p>
                 </el-col>
                 <el-col :span="12"v-if="settings.nickname">
-                    <el-input :value="$store.state.user.nickname" @input="changeInformation" :clearable="true"></el-input>
+                    <el-input ref="nickname" v-model="user.nickname" :clearable="true"></el-input>
                 </el-col>
                 <el-col :span="12"v-else>{{$store.state.user.nickname}}</el-col>
-                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary" @click="settings.nickname = !settings.nickname">{{settings.nickname?'保存':'修改昵称'}}</el-button></el-col>
+                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary" @click="changeInformation('nickname')">{{settings.nickname?'保存':'修改昵称'}}</el-button></el-col>
             </el-row>
             <!--性别设置-->
             <el-row style="height: 50px" type="flex" align="middle">
@@ -46,8 +46,15 @@
                 <el-col :span="6">
                     <p style="color: #909399;font-size: 14px">我的地址</p>
                 </el-col>
-                <el-col :span="12">{{$store.state.user.address}}</el-col>
-                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary">修改地址</el-button></el-col>
+
+                <el-col :span="12" v-if="settings.address">
+                    <el-input ref="address" v-model="user.address" :clearable="true"></el-input>
+                </el-col>
+                <el-col :span="12" v-else>{{$store.state.user.address}}</el-col>
+
+                <el-col :span="6">
+                    <el-button style="float: right;" size="mini" type="primary" @click="changeInformation('address')">修改地址</el-button>
+                </el-col>
             </el-row>
         </div>
 
@@ -95,13 +102,20 @@
                     address: false,
                     telephone: false,
                     email: false
+                },
+                user: {
+                    nickname: this.$store.state.user.nickname,
+                    address: this.$store.state.user.address,
                 }
             }
         },
 
         methods: {
-            changeInformation(value){
-                this.$store.commit('changeNickname',value);
+            changeInformation(name){
+                if(this.settings[name]){
+                    this.$store.commit('changeInformation',{key: name, value: this.$refs[name].value});
+                }
+                this.settings[name] = !this.settings[name];
             }
         }
     }

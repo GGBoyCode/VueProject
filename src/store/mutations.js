@@ -1,5 +1,5 @@
 export default {
-    changeNickname(state,payload){
-        state.user.nickname = payload;
+    changeInformation(state,payload){
+        state.user[payload.key] = payload.value;
     }
 };

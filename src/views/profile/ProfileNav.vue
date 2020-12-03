@@ -5,7 +5,7 @@
             <el-avatar :size="70" style="margin: 30px 0 20px 0">
                 <i style="font-size: 30px;line-height: 70px" class="el-icon-user-solid"></i>
             </el-avatar>
-            <h4 style="color: #fff">用户名</h4>
+            <h4 style="color: #fff">{{$store.state.user.nickname}}</h4>
         </div>
         <!--用户信息导航栏-->
         <el-menu
