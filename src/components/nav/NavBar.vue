@@ -45,7 +45,24 @@
             <el-menu-item index="" disabled>模块三</el-menu-item>
             <el-menu-item index="" disabled><a href="javascript:;">模块四</a></el-menu-item>
             <template v-if="true">
-              <el-menu-item index="/profile" style="float: right" >user</el-menu-item>
+              <el-menu-item index="/profile" style="float: right" v-popover:pop>
+                <el-avatar :size="40" icon="el-icon-user-solid"></el-avatar>
+                <span style="margin-left: 10px">{{$store.state.user.nickname}}</span>
+              </el-menu-item>
+              <el-popover
+                ref="pop"
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :visible-arrow="false"
+              >
+                <div class="popover-body">
+                  <el-avatar :size="60" icon="el-icon-user-solid"></el-avatar>
+                  <p>{{$store.state.user.nickname}}</p>
+                  <small>{{$store.state.user.email}}</small>
+                  <p style="margin-top: 10px"><el-link :underline="false" type="primary">注销</el-link></p>
+                </div>
+              </el-popover>
             </template>
           <template v-else>
               <el-menu-item style="cursor: auto;float: right" @click="$refs.mod.visible = true">登录/注册</el-menu-item>
@@ -82,6 +99,16 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  /deep/ .el-menu-item i{
+    margin:0;
+  }
 
+  .popover-body{
+    text-align: center;
+  }
 
+  .popover-body p{
+    font-size: 16px;
+    color: rgb(57, 61, 73)
+  }
 </style>
