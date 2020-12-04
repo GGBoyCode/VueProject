@@ -9,6 +9,7 @@ const AccountSetting = () => import('../views/profile/page/AccountSetting');
 const Collection = () => import('../views/profile/page/Collection');
 const Connect = () => import('../views/profile/page/Connect');
 const Message = () => import('../views/profile/page/Message');
+const Forum = () => import('../views/forum/Forum');
 
 const routes = [
     //如果为'/home'则重定向为根目录'/'
@@ -52,6 +53,11 @@ const routes = [
       }
 
     ]
+  },
+  {
+    path: '/forum',
+    name: 'forum',
+    component: Forum
   }
 ]
 

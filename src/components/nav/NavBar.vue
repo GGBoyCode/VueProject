@@ -42,7 +42,7 @@
               <el-menu-item >选项3</el-menu-item>
               <el-menu-item >选项4</el-menu-item>
             </el-submenu>
-            <el-menu-item index="" disabled>模块三</el-menu-item>
+            <el-menu-item index="/forum">论坛</el-menu-item>
             <el-menu-item index="" disabled><a href="javascript:;">模块四</a></el-menu-item>
             <template v-if="true">
               <el-menu-item index="/profile" style="float: right" v-popover:pop>
