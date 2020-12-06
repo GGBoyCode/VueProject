@@ -10,6 +10,8 @@ const Collection = () => import('../views/profile/page/Collection');
 const Connect = () => import('../views/profile/page/Connect');
 const Message = () => import('../views/profile/page/Message');
 const Forum = () => import('../views/forum/Forum');
+const Detail = () => import('../views/forum/Detail');
+const Interview = () => import('../views/forum/Interview');
 
 const routes = [
     //如果为'/home'则重定向为根目录'/'
@@ -26,7 +28,7 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: Profile,
-    children:[
+    children: [
       {
         path:'',
         redirect:'account'
@@ -51,14 +53,24 @@ const routes = [
         name: 'message',
         component: Message
       }
-
     ]
   },
   {
     path: '/forum',
     name: 'forum',
-    component: Forum
-  }
+    component: Forum,
+    children: [
+      {
+        path: '',
+        component: Interview
+      },
+      {
+        path: 'detail',
+        name: 'detail',
+        component:Detail
+      }
+    ]
+  },
 ]
 
 const router = new VueRouter({
