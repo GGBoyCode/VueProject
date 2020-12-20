@@ -44,7 +44,7 @@
             </el-submenu>
             <el-menu-item index="/forum">论坛</el-menu-item>
             <el-menu-item index="" disabled><a href="javascript:;">模块四</a></el-menu-item>
-            <template v-if="true">
+            <template v-if="$store.state.loading">
               <el-menu-item index="/profile" style="float: right" v-popover:pop>
                 <el-avatar :size="40" icon="el-icon-user-solid"></el-avatar>
                 <span style="margin-left: 10px">{{$store.state.user.nickname}}</span>
@@ -83,7 +83,8 @@
     data() {
       return {
         navIndexOfPho:'1',
-        visible: false
+        visible: false,
+        sign:false
       }
     },
     computed:{

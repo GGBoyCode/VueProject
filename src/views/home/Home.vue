@@ -2,8 +2,8 @@
     <div id="Home">
         <!--走马灯——轮播图-->
         <el-carousel :interval="5000" arrow="always" height="500px">
-            <el-carousel-item v-for="item in 4" :key="item">
-                <h3>{{ item }}</h3>
+            <el-carousel-item v-for="item in list">
+                <img :src="url + item" style="object-fit: cover;width: 100%;height: 100%;">
             </el-carousel-item>
         </el-carousel>
 
@@ -15,15 +15,27 @@
 
 <script>
     import Recommend from './Recommend'
+    import {getCarousels} from '../../network/api.js'
     export default {
         name: "Home",
         data(){
             return {
                 Hot:'1',
+                list:[],
+                url:'/api/'
             }
         },
+
         components:{
             'recommend': Recommend
+        },
+
+        created() {
+            getCarousels(null).then(res => {
+                if(res.code == 20000) {
+                    this.list = res.data;
+                }
+            })
         }
     }
 </script>

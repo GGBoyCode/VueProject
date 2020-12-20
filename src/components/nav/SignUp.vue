@@ -27,6 +27,8 @@
 </template>
 
 <script>
+    import {signUp} from "../../network/api";
+
     export default {
         name: "SignUp",
         data:function () {
@@ -87,7 +89,18 @@
             submit(formName){
                 this.$refs[formName].validate((valid) => {
                    if(valid){
-                       console.log('submit');
+                       signUp({username: this.signUpForm.phone, password: this.signUpForm.password})
+                       .then(res => {
+                           if(res.code == 20000) {
+                               console.log("注册成功");
+                               this.$store.dispatch('loading',{username: this.signUpForm.phone, password: this.signUpForm.password});
+                           } else {
+                               console.log("注册失败");
+                           }
+                       })
+                       .catch(err => {
+                           console.log(err);
+                       })
                    }
                 });
             }

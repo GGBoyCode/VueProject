@@ -68,7 +68,7 @@
             submit(formName){
                 this.$refs[formName].validate((valid) => {
                     if(valid){
-                        console.log("submit");
+                        this.$store.dispatch('loading', {username: this.signInForm.phone, password: this.signInForm.password});
                     }
                 });
             }
