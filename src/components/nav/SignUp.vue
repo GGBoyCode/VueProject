@@ -97,6 +97,7 @@
                                    type: 'success'
                                }
                                this.$refs[formName].resetFields();
+                               this.$parent.$parent.setCurrentName("first");
                            } else {
                                this.$message.error("注册失败");
                            }
@@ -104,8 +105,6 @@
                        .catch(err => {
                            this.$message.error("网络请求错误");
                        })
-                   } else {
-                       this.$parent.$parent.setCurrentName("first");
                    }
                 });
             }
