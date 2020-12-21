@@ -24,6 +24,8 @@
 </template>
 
 <script>
+    import {signIn} from "../../network/api";
+
     export default {
         name: "SignIn",
         data:function () {
@@ -68,7 +70,20 @@
             submit(formName){
                 this.$refs[formName].validate((valid) => {
                     if(valid){
-                        this.$store.dispatch('loading', {username: this.signInForm.phone, password: this.signInForm.password});
+                        signIn({username: this.signInForm.phone, password: this.signInForm.password})
+                        .then(res => {
+                            console.log(res);
+                            if(res.code === 20000) {
+                                this.$store.commit('updateLoading', {loading: true});
+                            } else {
+                                this.$message.error('账号密码错误');
+                                this.signInForm.password = '';
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            this.$message.error('网络请求错误');
+                        })
                     }
                 });
             }

@@ -92,14 +92,17 @@
                        signUp({username: this.signUpForm.phone, password: this.signUpForm.password})
                        .then(res => {
                            if(res.code == 20000) {
-                               console.log("注册成功");
+                               this.$message = {
+                                   message: '注册成功',
+                                   type: 'success'
+                               }
                                this.$store.dispatch('loading',{username: this.signUpForm.phone, password: this.signUpForm.password});
                            } else {
-                               console.log("注册失败");
+                               this.$message.error("注册失败");
                            }
                        })
                        .catch(err => {
-                           console.log(err);
+                           this.$message.error("网络请求错误");
                        })
                    }
                 });
