@@ -15,6 +15,20 @@
             <article>
                 <p>content</p>
             </article>
+
+            <div style="margin-top: 10px">
+                <small>
+                    <span class="icon-info">
+                        <el-link type="info" :underline="false" icon="el-icon-position">8</el-link>
+                    </span>
+
+                    <span class="icon-info">
+                        <el-link type="info" :underline="false" icon="el-icon-star-off">收藏</el-link>
+                    </span>
+
+                    <el-button style="float: right" type="primary" size="mini" icon="el-icon-edit">回复讨论</el-button>
+                </small>
+            </div>
         </el-card>
 
         <el-card class="pre-comment">
@@ -36,6 +50,22 @@
             </template>
             <div v-for="o in 4" :key="o">
                 {{'列表内容 ' + o }}
+            </div>
+
+            <div style="margin-top: 10px">
+                <small>
+                <span class="icon-info">
+                    <el-link type="info" :underline="false" icon="el-icon-position">8</el-link>
+                </span>
+
+                <span class="icon-info">
+                    <el-link type="info" :underline="false" icon="el-icon-chat-round">回复 10</el-link>
+                </span>
+
+                <span class="icon-info">
+                    <el-link type="info" :underline="false" icon="el-icon-star-off">收藏 1</el-link>
+                </span>
+                </small>
             </div>
         </el-card>
     </div>
@@ -62,5 +92,10 @@
 
     .pre-comment /deep/ .el-card__body{
         padding: 5px 10px;
+    }
+
+    .icon-info {
+        margin-right: 20px;
+        color: rgb(140, 140, 140);
     }
 </style>

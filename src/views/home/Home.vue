@@ -33,6 +33,7 @@
         created() {
             getCarousels(null).then(res => {
                 if(res.code == 20000) {
+                    console.log(res.data);
                     this.list = res.data;
                 }
             })

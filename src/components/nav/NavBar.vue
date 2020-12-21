@@ -46,7 +46,7 @@
             <el-menu-item index="" disabled><a href="javascript:;">模块四</a></el-menu-item>
             <template v-if="$store.state.loading">
               <el-menu-item @click="toProfile" style="float: right" v-popover:box key="user">
-                <el-avatar :size="40" icon="el-icon-user-solid"></el-avatar>
+                <el-avatar :size="40" :src="$store.state.user.url?$store.state.path + $store.state.user.url:$store.state.user.url" icon="el-icon-user-solid"></el-avatar>
                 <span style="margin-left: 10px">{{$store.state.user.nickname}}</span>
               </el-menu-item>
               <el-popover
@@ -57,7 +57,7 @@
                 :visible-arrow="false"
               >
                 <div class="popover-body">
-                  <el-avatar :size="60" icon="el-icon-user-solid"></el-avatar>
+                  <el-avatar :size="60" :src="$store.state.user.url?$store.state.path + $store.state.user.url:$store.state.user.url" icon="el-icon-user-solid"></el-avatar>
                   <p>{{$store.state.user.nickname}}</p>
                   <small>{{$store.state.user.email}}</small>
                   <p style="margin-top: 10px"><el-link :underline="false" type="primary" @click="logout">注销</el-link></p>

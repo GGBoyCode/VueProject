@@ -4,16 +4,41 @@
             <h4 style="color: rgb(57, 61, 73)">基本设置</h4>
             <!--头像设置-->
             <el-row style="height: 50px" type="flex" align="middle">
-                <el-col :span="6">
+                <el-col :span="18">
                     <p style="color: #909399;font-size: 14px">头像</p>
                 </el-col>
-                <el-col :span="12">
-                    <el-avatar :size="50" >
-                        <i style="font-size: 20px;line-height: 50px" class="el-icon-user-solid"></i>
-                    </el-avatar>
-                </el-col>
-                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary">修改头像</el-button></el-col>
+                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary" @click="avatarVisible = true">修改头像</el-button></el-col>
             </el-row>
+            <el-dialog
+                    :visible.sync="avatarVisible"
+                    width="30%"
+                    :center="true"
+                    @close="closeUpload"
+            >
+                <div style="text-align: center">
+                    <p>请上传您的头像</p>
+                    <el-upload
+                            name="img"
+                            :data="{username: this.$store.state.user.telephone}"
+                            class="avatar-uploader"
+                            drag
+                            :action="$store.state.path + '/user/update/avatar'"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload">
+
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                        <template v-else>
+                            <i class="el-icon-upload"></i>
+                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                        </template>
+                    </el-upload>
+                </div>
+
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="submitUpload" style="width: 100%">确 定</el-button>
+                </span>
+            </el-dialog>
             <!--昵称设置-->
             <el-row style="height: 50px" type="flex" align="middle">
                 <el-col :span="6">
@@ -27,13 +52,14 @@
             </el-row>
             <!--性别设置-->
             <el-row style="height: 50px" type="flex" align="middle">
-                <el-col :span="6">
+                <el-col :span="18">
                     <p style="color: #909399;font-size: 14px">性别</p>
                 </el-col>
-                <el-col :span="18">
+                <el-col :span="6">
                     <el-switch
-                            style="display: block;"
+                            style="display: block;float: right;"
                             :value="$store.state.user.sex"
+                            @change="changeSex"
                             active-color="#13ce66"
                             inactive-color="#ff4949"
                             active-text="男"
@@ -89,7 +115,7 @@
                     <p style="color: #909399;font-size: 14px">密码设置</p>
                 </el-col>
                 <el-col :span="12">&nbsp;</el-col>
-                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary">修改密码</el-button></el-col>
+                <el-col :span="6"><el-button style="float: right;" size="mini" type="primary" @click="openDialog('修改密码')">修改密码</el-button></el-col>
             </el-row>
 
             <el-dialog
@@ -145,7 +171,8 @@
                 }
             }
             return {
-                sex:true,
+                imageUrl:'',
+                avatarVisible: false,
                 settings:{
                     nickname: false,
                     address: false,
@@ -163,7 +190,7 @@
                 },
                 rules:{
                     verify:[
-                        {validator: validateVerify, trigger: 'blur'}
+                        { validator: validateVerify, trigger: 'blur' }
                     ]
                 },
                 title:''
@@ -171,14 +198,18 @@
         },
 
         methods: {
-            changeInformation(name){
-                if(this.settings[name]){
-                    this.$store.commit('changeInformation',{key: name, value: this.$refs[name].value});
+            changeInformation(name) {
+                if(this.settings[name]) {
+                    this.$store.dispatch('updateUser',{key: name, value: this.$refs[name].value});
                 }
                 this.settings[name] = !this.settings[name];
             },
 
-            submit(name){
+            changeSex(value) {
+                this.$store.dispatch('updateUser',{key: "sex", value: value});
+            },
+
+            submit(name) {
                 this.$refs[name].validate(valid => {
                    if(valid){
                        console.log('submit');
@@ -187,13 +218,46 @@
                 });
             },
 
-            close(name){
+            close(name) {
                 this.$refs[name].resetFields();
             },
 
-            openDialog(title){
+            openDialog(title) {
                 this.title = title;
                 this.visible = true;
+            },
+
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+                console.log(this.$store.state.user);
+                this.$store.dispatch("getUser", {username: this.$store.state.user.telephone});
+            },
+
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式或 png 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+
+                return isJPG && isLt2M;
+            },
+
+            closeUpload() {
+                this.imageUrl = '';
+            },
+
+            submitUpload() {
+                if(this.imageUrl) {
+                    this.avatarVisible = false;
+                } else {
+                    this.$message.error("请选择你想要上传的图片");
+                }
             }
         },
 
@@ -239,5 +303,20 @@
         display: block;
         margin-left: 10px;
         margin-right: 10px
+    }
+
+    .avatar-uploader {
+        margin-top: 20px;
+    }
+
+    /deep/ .el-upload-dragger {
+        width: 200px;
+        height: 200px;
+    }
+
+    .avatar {
+        width: 200px;
+        height: 200px;
+        display: block;
     }
 </style>

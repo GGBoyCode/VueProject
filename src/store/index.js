@@ -9,13 +9,16 @@ Vue.use(Vuex);
 const state = {
     //是否登录
     loading:false,
+    //网络前缀
+    path:"/api",
     //用户信息
     user: {
-        nickname: 'user',
+        nickname: '',
         sex: true,
-        address: '四川省成都市青白江区',
-        email: '1770061644@qq.com',
-        telephone: '18180443372'
+        address: '',
+        email: '',
+        telephone: '',
+        url:''
     },
 };
 

@@ -2,7 +2,7 @@
     <div id="Nav">
         <!--用户头像信息-->
         <div class="block" style="text-align: center;background-color:#545c64">
-            <el-avatar :size="70" style="margin: 30px 0 20px 0">
+            <el-avatar :src="$store.state.user.url?$store.state.path + $store.state.user.url:$store.state.user.url" :size="70" style="margin: 30px 0 20px 0">
                 <i style="font-size: 30px;line-height: 70px" class="el-icon-user-solid"></i>
             </el-avatar>
             <h4 style="color: #fff">{{$store.state.user.nickname}}</h4>
@@ -41,6 +41,7 @@
         name: "Nav",
         data(){
             return {
+
             };
         },
         computed:{
