@@ -75,6 +75,7 @@
                             console.log(res);
                             if(res.code === 20000) {
                                 this.$store.commit('updateLoading', {loading: true});
+                                this.$store.dispatch("getUser", {username: this.signInForm.phone});
                             } else {
                                 this.$message.error('账号密码错误');
                                 this.signInForm.password = '';

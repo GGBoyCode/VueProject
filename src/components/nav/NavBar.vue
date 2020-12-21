@@ -45,12 +45,12 @@
             <el-menu-item index="/forum">论坛</el-menu-item>
             <el-menu-item index="" disabled><a href="javascript:;">模块四</a></el-menu-item>
             <template v-if="$store.state.loading">
-              <el-menu-item index="/profile" style="float: right" v-popover:pop>
+              <el-menu-item @click="toProfile" style="float: right" v-popover:box key="user">
                 <el-avatar :size="40" icon="el-icon-user-solid"></el-avatar>
                 <span style="margin-left: 10px">{{$store.state.user.nickname}}</span>
               </el-menu-item>
               <el-popover
-                ref="pop"
+                ref="box"
                 placement="top-start"
                 width="200"
                 trigger="hover"
@@ -60,12 +60,12 @@
                   <el-avatar :size="60" icon="el-icon-user-solid"></el-avatar>
                   <p>{{$store.state.user.nickname}}</p>
                   <small>{{$store.state.user.email}}</small>
-                  <p style="margin-top: 10px"><el-link :underline="false" type="primary">注销</el-link></p>
+                  <p style="margin-top: 10px"><el-link :underline="false" type="primary" @click="logout">注销</el-link></p>
                 </div>
               </el-popover>
             </template>
           <template v-else>
-              <el-menu-item style="cursor: auto;float: right" @click="$refs.mod.visible = true">登录/注册</el-menu-item>
+              <el-menu-item key="sign" style="cursor: auto;float: right" @click="$refs.mod.visible = true">登录/注册</el-menu-item>
               <module ref = "mod"></module>
             </template>
           </el-menu>
@@ -83,19 +83,35 @@
     data() {
       return {
         navIndexOfPho:'1',
+        paths: ["/", "/forum"],
         visible: false,
         sign:false
       }
     },
-    computed:{
-      navIndexOfPc(){
-        console.log(this.$route.path);
-        return this.$route.path;
+
+    computed: {
+      navIndexOfPc() {
+        return this.paths.filter(value => {
+          return value === this.$route.path;
+        })[0];
       }
     },
-    components:{
+
+    components: {
       'module': Module
     },
+
+    methods: {
+      toProfile() {
+        if(this.$route.path !== '/profile/account') {
+          this.$router.push('/profile');
+        }
+      },
+
+      logout() {
+        this.$store.commit("updateLoading", {loading: false});
+      }
+    }
   }
 </script>
 

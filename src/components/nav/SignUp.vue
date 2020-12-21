@@ -96,7 +96,7 @@
                                    message: '注册成功',
                                    type: 'success'
                                }
-                               this.$store.dispatch('loading',{username: this.signUpForm.phone, password: this.signUpForm.password});
+                               this.$refs[formName].resetFields();
                            } else {
                                this.$message.error("注册失败");
                            }
@@ -104,6 +104,8 @@
                        .catch(err => {
                            this.$message.error("网络请求错误");
                        })
+                   } else {
+                       this.$parent.$parent.setCurrentName("first");
                    }
                 });
             }
