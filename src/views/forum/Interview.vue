@@ -20,7 +20,7 @@
                 <table class="table-header">
                     <tr>
                         <td>
-                            <el-avatar :size="25" :src="Article.url" icon="el-icon-user-solid"></el-avatar>
+                            <el-avatar :size="25" :src="Article.user.userPicture === undefined?'':$store.state.path + '/' +Article.user.userPicture" icon="el-icon-user-solid"></el-avatar>
                         </td>
                         <td>
                             <el-link :underline="false">{{Article.title}}</el-link>
@@ -51,12 +51,23 @@
                 </small>
             </div>
         </el-card>
+
+        <el-pagination
+            @size-change="sizeChange"
+            @current-change="currentChange"
+            :page-sizes="[10, 20, 30]"
+            :page-size.sync="limit"
+            :current-page.sync="page"
+            layout="sizes, prev, pager, next"
+            :total="total"
+            :hide-on-single-page="true">
+        </el-pagination>
     </div>
 </template>
 
 <script>
     import Editor from "../../components/content/Editor"
-    import {addArticle, getArticle, getUserInfo} from "../../network/api";
+    import {addArticle, getArticle, getArticleCount} from "../../network/api";
 
     export default {
         name: "interview",
@@ -64,7 +75,10 @@
             return {
                 ArticleList:[],
                 activeIndex: '1',
-                drawer:false
+                drawer:false,
+                page: 0,
+                limit: 10,
+                total: 0
             };
         },
         components: {
@@ -91,6 +105,16 @@
 
             ToText(HTML) {
                 return HTML.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ');
+            },
+
+            sizeChange(val) {
+                console.log(val);
+                console.log(this.limit);
+            },
+
+            currentChange(val) {
+                console.log(val);
+                console.log(this.page);
             },
 
             commitArticle(article) {
@@ -121,29 +145,28 @@
         },
 
         created() {
-            getArticle()
+            getArticle({page: 0, limit: 10})
             .then(res => {
                 if(res.code === 20000) {
-                    let data = res.data;
-                    for(let Article of data){
-                        //获取用户信息
-                        getUserInfo({username: Article.userId})
-                        .then(res => {
-                            if(res.code === 20000) {
-                                Article.url = this.$store.state.path + '/' + res.data.userPicture;
-                            } else {
-                                Article.url = '';
-                            }
-                            this.ArticleList.push(Article);
-                        })
-                    }
+                    this.ArticleList = res.data;
                 } else {
                     this.$message.error("数据获取错误");
                 }
             })
             .catch(err => {
                 this.$message.error("数据获取错误");
+            });
+            getArticleCount()
+            .then(res => {
+                if(res.code === 20000) {
+                    this.total = res.count;
+                } else {
+                    this.$message.error("数据获取错误");
+                }
             })
+            .catch(err => {
+                this.$message.error("数据获取错误");
+            });
         }
     }
 </script>

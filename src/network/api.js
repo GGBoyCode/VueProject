@@ -16,5 +16,11 @@ export const addArticle = params => post('/article/add', params);
 export const getArticle = params => get('/article/all', params);
 //根据id获取文章
 export const getArticleById = params => get('/article/get', params);
+//获取文章数目
+export const getArticleCount = params => get('/article/count', params);
 //添加评论
 export const addComment = params => post('/comment/add', params);
+//获取评论信息
+export const getComment = params => post('/comment/get', params)
+//获取评论数
+export const getCommentCount = params => post('/comment/count', params)

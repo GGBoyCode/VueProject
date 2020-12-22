@@ -3,7 +3,7 @@
         <table class="table-header">
             <tr>
                 <td>
-                    <el-avatar :size="30" :src="src" icon="el-icon-user-solid"></el-avatar>
+                    <el-avatar :size="30" :src="src === undefined || src === ''?'':this.$store.state.path + '/' + this.src" icon="el-icon-user-solid"></el-avatar>
                 </td>
                 <td>
                     <el-link :underline="false">{{title}}</el-link>
@@ -36,7 +36,7 @@
         props:{
             src: {
                 type: String,
-                default: ''
+                default: undefined
             },
             title: {
                 type: String,
@@ -63,7 +63,7 @@
             return {
 
             }
-        }
+        },
     }
 </script>
 

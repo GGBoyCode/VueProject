@@ -1,11 +1,12 @@
 <template>
     <div class="detail">
         <ArticleCard
-            :src="article.src"
+            :src="url"
             :title="article.title"
             :content="article.content"
-            :name="$store.state.user.nickname"
+            :name="name"
             :good="article.goodCount"
+            :publish="new Date(article.publishTime).toString()"
             @click="openDrawer">
         </ArticleCard>
 
@@ -17,10 +18,28 @@
         </Editor>
 
         <el-card class="pre-comment">
-            <small style="color: rgba(191, 191, 191, 1)">共1评论</small>
+            <small style="color: rgba(191, 191, 191, 1)">共{{total}}评论</small>
         </el-card>
 
-        <CommentCard></CommentCard>
+        <CommentCard
+            v-for="comment in comments"
+            :url="comment.user.userPicture"
+            :content="comment.content"
+            :name="comment.user.name"
+            :good="comment.goodCount"
+            :time="new Date(comment.publishTime).toString()">
+        </CommentCard>
+
+        <el-pagination
+            @size-change="sizeChange"
+            @current-change="currentChange"
+            :page-sizes="[10, 20, 30]"
+            :page-size.sync="limit"
+            :current-page.sync="page"
+            layout="sizes, prev, pager, next"
+            :total="total"
+            :hide-on-single-page="true">
+        </el-pagination>
     </div>
 </template>
 
@@ -28,14 +47,20 @@
     import ArticleCard from "../../components/content/ArticleCard"
     import CommentCard from "../../components/content/CommentCard";
     import Editor from "../../components/content/Editor"
-    import {addComment, getArticleById} from "../../network/api";
+    import {addComment, getArticleById, getComment, getCommentCount} from "../../network/api";
 
     export default {
         name: "Detail",
         data() {
             return {
                 article: {},
+                comments: [],
+                url:'',
+                name:'',
                 drawer:false,
+                page: 0,
+                limit: 10,
+                total: 0
             }
         },
 
@@ -52,6 +77,16 @@
                 } else {
                     this.$message.error("请先登录再评论");
                 }
+            },
+
+            sizeChange(val) {
+                console.log(val);
+                console.log(this.limit);
+            },
+
+            currentChange(val) {
+                console.log(val);
+                console.log(this.page);
             },
 
             commitComment(comment) {
@@ -83,13 +118,37 @@
             .then(res => {
                 if(res.code === 20000) {
                     this.article = res.data;
+                    this.url = this.article.user['userPicture'];
+                    this.name = this.article.user.name;
                 } else {
                     this.$message.error("数据获取失败");
                 }
             })
             .catch(err => {
                 this.$message.error("数据获取失败");
-            })
+            });
+            getComment({articleId: this.$route.query.id, page: 0, limit: 10})
+                .then(res => {
+                    if(res.code === 20000) {
+                        this.comments = res.data;
+                    } else {
+                        this.$message.error("数据获取失败");
+                    }
+                })
+                .catch(err => {
+                    this.$message.error("数据获取失败");
+                });
+            getCommentCount({articleId: this.$route.query.id})
+                .then(res => {
+                    if(res.code === 20000) {
+                        this.total = res.data;
+                    } else {
+                        this.$message.error("数据获取失败");
+                    }
+                })
+                .catch(err => {
+                    this.$message.error("数据获取失败");
+                });
         }
     }
 </script>

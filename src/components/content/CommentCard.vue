@@ -4,12 +4,12 @@
             <table class="table-header">
                 <tr>
                     <td>
-                        <el-avatar :size="25" :src="url" icon="el-icon-user-solid"></el-avatar>
+                        <el-avatar :size="25" :src="url === undefined || url === ''?'':$store.state.path + '/' + url" icon="el-icon-user-solid"></el-avatar>
                     </td>
-                    <td>
+                    <td width="30%">
                         <el-link :underline="false">{{name}}</el-link>
                     </td>
-                    <td width="100%" align="right" style="color: rgb(191, 191, 191)"><small>{{time}}</small></td>
+                    <td width="70%" align="right" style="color: rgb(191, 191, 191)"><small>{{time}}</small></td>
                 </tr>
             </table>
         </template>
@@ -40,7 +40,7 @@
         props: {
             url: {
                 type: String,
-                default: ''
+                default: undefined
             },
             name: {
                 type: String,
@@ -63,7 +63,7 @@
             return {
 
             }
-        }
+        },
     }
 </script>
 
