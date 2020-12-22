@@ -1,101 +1,105 @@
 <template>
     <div class="detail">
-        <el-card>
-            <table class="table-header">
-                <tr>
-                    <td>
-                        <el-avatar :size="30" icon="el-icon-user-solid"></el-avatar>
-                    </td>
-                    <td>
-                        <el-link :underline="false">title</el-link>
-                    </td>
-                </tr>
-            </table>
-            <small style="color: rgba(191, 191, 191, 1)">username time</small>
-            <article>
-                <p>content</p>
-            </article>
+        <ArticleCard
+            :src="article.src"
+            :title="article.title"
+            :content="article.content"
+            :name="$store.state.user.nickname"
+            :good="article.goodCount"
+            @click="openDrawer">
+        </ArticleCard>
 
-            <div style="margin-top: 10px">
-                <small>
-                    <span class="icon-info">
-                        <el-link type="info" :underline="false" icon="el-icon-position">8</el-link>
-                    </span>
-
-                    <span class="icon-info">
-                        <el-link type="info" :underline="false" icon="el-icon-star-off">收藏</el-link>
-                    </span>
-
-                    <el-button style="float: right" type="primary" size="mini" icon="el-icon-edit">回复讨论</el-button>
-                </small>
-            </div>
-        </el-card>
+        <Editor
+            :visible.sync="drawer"
+            :title="false"
+            button="回复讨论"
+            @commit="commitComment">
+        </Editor>
 
         <el-card class="pre-comment">
             <small style="color: rgba(191, 191, 191, 1)">共1评论</small>
         </el-card>
 
-        <el-card class="comment">
-            <template slot="header" >
-                <table class="table-header">
-                    <tr>
-                        <td>
-                            <el-avatar :size="25" icon="el-icon-user-solid"></el-avatar>
-                        </td>
-                        <td>
-                            <el-link :underline="false">username</el-link>
-                        </td>
-                    </tr>
-                </table>
-            </template>
-            <div v-for="o in 4" :key="o">
-                {{'列表内容 ' + o }}
-            </div>
-
-            <div style="margin-top: 10px">
-                <small>
-                <span class="icon-info">
-                    <el-link type="info" :underline="false" icon="el-icon-position">8</el-link>
-                </span>
-
-                <span class="icon-info">
-                    <el-link type="info" :underline="false" icon="el-icon-chat-round">回复 10</el-link>
-                </span>
-
-                <span class="icon-info">
-                    <el-link type="info" :underline="false" icon="el-icon-star-off">收藏 1</el-link>
-                </span>
-                </small>
-            </div>
-        </el-card>
+        <CommentCard></CommentCard>
     </div>
 </template>
 
 <script>
+    import ArticleCard from "../../components/content/ArticleCard"
+    import CommentCard from "../../components/content/CommentCard";
+    import Editor from "../../components/content/Editor"
+    import {addComment, getArticleById} from "../../network/api";
+
     export default {
-        name: "Detail"
+        name: "Detail",
+        data() {
+            return {
+                article: {},
+                drawer:false,
+            }
+        },
+
+        components:{
+            ArticleCard,
+            CommentCard,
+            Editor
+        },
+
+        methods: {
+            openDrawer() {
+                if(this.$store.state.loading) {
+                    this.drawer = true;
+                } else {
+                    this.$message.error("请先登录再评论");
+                }
+            },
+
+            commitComment(comment) {
+                if(!comment.content) {
+                    this.$message.error("请输入评论内容");
+                } else {
+                    addComment({userId: this.$store.state.user.telephone, articleId: this.article.id, content: comment.content})
+                        .then(res => {
+                            if(res.code === 20000) {
+                                this.$message({
+                                    type: "success",
+                                    message: '回复成功'
+                                });
+                            } else {
+                                this.$message.error('回复失败');
+                            }
+                        })
+                        .catch(err => {
+                            this.$message.error('网络错误');
+                        })
+
+                    this.drawer = false;
+                }
+            }
+        },
+
+        created() {
+            getArticleById({id: this.$route.query.id})
+            .then(res => {
+                if(res.code === 20000) {
+                    this.article = res.data;
+                } else {
+                    this.$message.error("数据获取失败");
+                }
+            })
+            .catch(err => {
+                this.$message.error("数据获取失败");
+            })
+        }
     }
 </script>
 
 <style scoped>
-    .el-avatar{
-        display: block;
-    }
-
-    .table-header tr td{
-        padding-right: 10px;
-    }
-
     .pre-comment,.comment{
         margin-top: 10px;
     }
 
     .pre-comment /deep/ .el-card__body{
         padding: 5px 10px;
-    }
-
-    .icon-info {
-        margin-right: 20px;
-        color: rgb(140, 140, 140);
     }
 </style>

@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 module.exports = {
     devServer: {
         // vue项目启动时的ip地址和端口
@@ -16,5 +17,11 @@ module.exports = {
                 }
             }
         }
-    }
+    },
+    chainWebpack: config => {
+        config.plugin('provide').use(webpack.ProvidePlugin, [{
+            'window.Quill': 'quill/dist/quill.js',
+            'Quill': 'quill/dist/quill.js'
+        }])
+    },
 }
