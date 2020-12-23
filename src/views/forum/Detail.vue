@@ -154,7 +154,7 @@
 </script>
 
 <style scoped>
-    .pre-comment,.comment{
+    .pre-comment{
         margin-top: 10px;
     }
 

@@ -35,20 +35,14 @@
             text-color="#fff"
             active-text-color="#ffd04b">
             <el-menu-item index="/">首页</el-menu-item>
-            <el-submenu index="" disabled>
-              <template slot="title">模块二</template>
-              <el-menu-item >选项1</el-menu-item>
-              <el-menu-item >选项2</el-menu-item>
-              <el-menu-item >选项3</el-menu-item>
-              <el-menu-item >选项4</el-menu-item>
-            </el-submenu>
+            <el-menu-item index="/mall">商场</el-menu-item>
             <el-menu-item index="/forum">论坛</el-menu-item>
-            <el-menu-item index="" disabled><a href="javascript:;">模块四</a></el-menu-item>
             <template v-if="$store.state.loading">
               <el-menu-item @click="toProfile" style="float: right" v-popover:box key="user">
                 <el-avatar :size="40" :src="$store.state.user.url?$store.state.path + $store.state.user.url:$store.state.user.url" icon="el-icon-user-solid"></el-avatar>
                 <span style="margin-left: 10px">{{$store.state.user.nickname}}</span>
               </el-menu-item>
+              <el-menu-item style="float: right" index="/cart">购物车</el-menu-item>
               <el-popover
                 ref="box"
                 placement="top-start"
@@ -83,7 +77,7 @@
     data() {
       return {
         navIndexOfPho:'1',
-        paths: ["/", "/forum"],
+        paths: ["/", "/forum", '/mall', '/cart'],
         visible: false,
         sign:false
       }

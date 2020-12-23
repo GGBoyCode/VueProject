@@ -50,14 +50,14 @@
                 <el-col :span="16">
                     <ArticleCard
                         v-if="title"
-                        :src="$store.state.user.url?$store.state.path + $store.state.user.url:$store.state.user.url"
+                        :src="$store.state.user.url"
                         :title="article.title"
                         :content="article.content"
                         :name="$store.state.user.nickname">
                     </ArticleCard>
                     <CommentCard
                         v-else
-                        :url="$store.state.user.url?$store.state.path + $store.state.user.url:$store.state.user.url"
+                        :url="$store.state.user.url"
                         :content="article.content"
                         :name="$store.state.user.nickname">
                     </CommentCard>

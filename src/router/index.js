@@ -12,6 +12,9 @@ const Message = () => import('../views/profile/page/Message');
 const Forum = () => import('../views/forum/Forum');
 const Detail = () => import('../views/forum/Detail');
 const Interview = () => import('../views/forum/Interview');
+const Mall = () => import('../views/mall/mall')
+const MallDetail = () => import('../views/mall/detail')
+const Cart = () => import('../views/mall/cart')
 
 const routes = [
     //如果为'/home'则重定向为根目录'/'
@@ -71,6 +74,21 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/mall',
+    name: 'mall',
+    component: Mall,
+  },
+  {
+    path: '/mall/detail',
+    name: 'mallDetail',
+    component:MallDetail
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: Cart
+  }
 ]
 
 const router = new VueRouter({

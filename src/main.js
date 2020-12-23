@@ -16,6 +16,8 @@ import { ImageDrop } from "quill-image-drop-module";
 Quill.register("modules/imageDrop", ImageDrop);
 Quill.register("modules/imageResize", ImageResize); // 注册
 
+import $ from "jquery"
+
 Vue.config.productionTip = false
 
 Vue.use(Element)

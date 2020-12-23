@@ -4,7 +4,7 @@
             <table class="table-header">
                 <tr>
                     <td>
-                        <el-avatar :size="25" :src="url === undefined || url === ''?'':$store.state.path + '/' + url" icon="el-icon-user-solid"></el-avatar>
+                        <el-avatar style=" vertical-align:middle;" :size="25" :src="url === undefined || url === ''?'':$store.state.path + '/' + url" icon="el-icon-user-solid"></el-avatar>
                     </td>
                     <td width="30%">
                         <el-link :underline="false">{{name}}</el-link>
@@ -68,6 +68,14 @@
 </script>
 
 <style scoped>
+    .comment{
+        margin-top: 10px;
+    }
+
+    /deep/ .el-card__body{
+        padding: 5px 10px;
+    }
+
     .table-header tr td{
         padding-right: 10px;
     }
