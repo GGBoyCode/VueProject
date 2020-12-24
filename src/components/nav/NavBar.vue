@@ -38,7 +38,7 @@
             <el-menu-item index="/mall">商场</el-menu-item>
             <el-menu-item index="/forum">论坛</el-menu-item>
             <template v-if="$store.state.loading">
-              <el-menu-item @click="toProfile" style="float: right" v-popover:box key="user">
+              <el-menu-item index="/profile" style="float: right" v-popover:box key="user">
                 <el-avatar :size="40" :src="$store.state.user.url?$store.state.path + $store.state.user.url:$store.state.user.url" icon="el-icon-user-solid"></el-avatar>
                 <span style="margin-left: 10px">{{$store.state.user.nickname}}</span>
               </el-menu-item>
@@ -58,7 +58,7 @@
                 </div>
               </el-popover>
             </template>
-          <template v-else>
+            <template v-else>
               <el-menu-item key="sign" style="cursor: auto;float: right" @click="$refs.mod.visible = true">登录/注册</el-menu-item>
               <module ref = "mod"></module>
             </template>
@@ -77,7 +77,7 @@
     data() {
       return {
         navIndexOfPho:'1',
-        paths: ["/", "/forum", '/mall', '/cart'],
+        paths: ["/", "/forum", '/mall', '/cart', '/profile'],
         visible: false,
         sign:false
       }
@@ -85,9 +85,13 @@
 
     computed: {
       navIndexOfPc() {
-        return this.paths.filter(value => {
-          return value === this.$route.path;
-        })[0];
+        if(this.$route.path === '/') {
+          return this.$route.path
+        } else {
+          return this.paths.find(value => {
+            return this.$route.path.indexOf(value) != -1
+          })
+        }
       }
     },
 
@@ -96,11 +100,11 @@
     },
 
     methods: {
-      toProfile() {
+      /*toProfile() {
         if(this.$route.path !== '/profile/account') {
           this.$router.push('/profile');
         }
-      },
+      },*/
 
       logout() {
         this.$store.commit("updateLoading", {loading: false});

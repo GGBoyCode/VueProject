@@ -1,137 +1,202 @@
 <template>
-    <main id="main-container" class="main-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-content">
-                        <h5 class="section-content__title">加购的商品</h5>
+    <div style="margin-top: 20px">
+        <el-row type="flex" justify="center">
+            <el-col :span="18">
+                <el-menu default-active="1" class="el-menu-demo" mode="horizontal">
+                    <el-menu-item index="1">全部商品</el-menu-item>
+                    <div class="btn">
+                        <small>已选商品（不含运费）</small>
+                        <small style="color: red;font-weight: 600;padding: 0 10px">{{sum.toFixed(2)}}</small>
+                        <el-button v-if="checkedList.length > 0" size="mini" type="danger">结算</el-button>
+                        <el-button v-else size="mini" type="info" disabled>结算</el-button>
                     </div>
-                    <div class="table-content table-responsive cart-table-content m-t-30">
-                        <table>
-                            <thead class="gray-bg" >
-                            <tr>
-                                <th>图片</th>
-                                <th>商品图片</th>
-                                <th>商品单价</th>
-                                <th>数量</th>
-                                <th>商品总价</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <a href="Details.html"><img class="img-fluid" src="../../assets/img/banner/shouban.png" alt=""></a>
-                                </td>
-                                <td class="product-name"><a href="Details.html" title="查看详情">独角兽</a></td>
-                                <td class="product-price-cart"><span class="amount">¥100.00</span></td>
-                                <td class="product-quantities">
-                                    <div class="quantity d-inline-block">
-                                        <input type="number" min="1" step="1" value="1">
-                                    </div>
-                                </td>
-                                <td class="product-subtotal">¥100.00</td>
-                                <td class="product-remove">
-                                    <a href="wishlist.html" title="添加到喜欢"><i class="fa fa-heart"></i></a>
-                                    <a href="#"><i class="fa fa-times"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <a href="Details.html"><img class="img-fluid" src="../../assets/img/banner/shouban.png" alt=""></a>
-                                </td>
-                                <td class="product-name"><a href="Details.html">独角兽</a></td>
-                                <td class="product-price-cart"><span class="amount">¥100.00</span></td>
-                                <td class="product-quantities">
-                                    <div class="quantity d-inline-block">
-                                        <input type="number" min="1" step="1" value="1">
-                                    </div>
-                                </td>
-                                <td class="product-subtotal">¥100.00</td>
-                                <td class="product-remove">
-                                    <a href="wishlist.html" title="添加到喜欢"><i class="fa fa-heart"></i></a>
-                                    <a href="#"><i class="fa fa-times"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <a href="Details.html"><img class="img-fluid" src="../../assets/img/banner/shouban.png" alt=""></a>
-                                </td>
-                                <td class="product-name"><a href="Details.html">独角兽</a></td>
-                                <td class="product-price-cart"><span class="amount">¥100.00</span></td>
-                                <td class="product-quantities">
-                                    <div class="quantity d-inline-block">
-                                        <input type="number" min="1" step="1" value="1">
-                                    </div>
-                                </td>
-                                <td class="product-subtotal">¥100.00</td>
-                                <td class="product-remove">
-                                    <a href="wishlist.html" title="添加到喜欢"><i class="fa fa-heart"></i></a>
-                                    <a href="#"><i class="fa fa-times"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <a href="Details.html"><img class="img-fluid" src="../../assets/img/banner/shouban.png" alt=""></a>
-                                </td>
-                                <td class="product-name"><a href="Details.html">独角兽</a></td>
-                                <td class="product-price-cart"><span class="amount">¥100.00</span></td>
-                                <td class="product-quantities">
-                                    <div class="quantity d-inline-block">
-                                        <input type="number" min="1" step="1" value="1">
-                                    </div>
-                                </td>
-                                <td class="product-subtotal">¥100.00</td>
-                                <td class="product-remove">
-                                    <a href="wishlist.html" title="添加到喜欢"><i class="fa fa-heart"></i></a>
-                                    <a href="#"><i class="fa fa-times"></i></a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                </el-menu>
 
-                    <div class="cart-table-button m-t-10">
-                        <div class="cart-table-button--left">
-                            <a href="mall.html" class="btn btn--box btn--large btn--gray btn--uppercase btn--weight m-t-20">继续购物</a>
-                        </div>
-                        <div class="cart-table-button--right">
-                            <a href="#erweima" data-toggle="modal" class="btn btn--box btn--large btn--blue btn--uppercase btn--weight m-t-20">结算</a>
-                        </div>
-                    </div>
+                <!--表头-->
+                <el-row style="margin-top: 20px">
+                    <template v-for="header in tableHeaders">
+                        <el-col class="header" :span="header.size">
+                            <template v-if="header.title === '全选'">
+                                <el-checkbox v-model="allChecked" @change="handleCheckAllChange" style="padding-left: 10px">{{header.title}}</el-checkbox>
+                            </template>
+                            <template v-else>{{header.title}}</template>
+                        </el-col>
+                    </template>
+                </el-row>
+
+                <!--购物车列表-->
+                <el-checkbox-group
+                    v-model="checkedList"
+                    @change="handleCheckedChange">
+                    <!--:ref="'list' + ware.id"-->
+                    <CartList
+                        v-for="ware in list"
+                        ref="list"
+                        :url="$store.state.path + '/' + ware.url"
+                        :id="ware.id"
+                        :price="ware.price"
+                        :title="ware.name"
+                        @change="getSum"
+                        @delete="deleteWare(ware.id)"
+                    ></CartList>
+                </el-checkbox-group>
+
+
+                <div style="width: 100%;height: 40px;background-color: #e5e5e5;margin: 20px 0">
+                    <el-checkbox v-model="allChecked" @change="handleCheckAllChange" style="padding-left: 10px" class="footer">全选</el-checkbox>
+                    <el-link class="footer" @click="addLove" :underline="false">添加到喜欢</el-link>
+                    <el-link class="footer" @click="deleteCart" :underline="false">删除</el-link>
+                    <el-button v-if="checkedList.length > 0" style="float: right;height: 40px" size="medium" type="danger">结算</el-button>
+                    <el-button v-else style="float: right;height: 40px" size="medium" type="info" disabled>结算</el-button>
+                    <span style="float: right;line-height:40px;font-size:18px;font-weight: 600;color: red;padding-right: 5px">{{sum.toFixed(2)}}</span>
+                    <span class="footer" style="float: right;padding: 0">
+                        已选商品1件合计（不含运费）：
+                    </span>
+                    <span class="footer" style="float: right">
+                        已选商品<span style="font-weight: 600;color: red;padding: 0 5px">{{number}}</span>件
+                    </span>
                 </div>
-
-            </div>
-        </div>
-    </main>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 
 <script>
-    import "../../assets/js/vendor/bootstrap.bundle.js";
-    import "../../assets/js/vendor/jquery-3.5.1.min.js";
-    import "../../assets/js/vendor/modernizr-3.7.1.min.js";
-    import "../../assets/js/vendor/jquery-ui.min.js";
-    import "../../assets/js/plugin/swiper.min.js"
-    import "../../assets/js/plugin/jquery.countdown.min.js"
-    import "../../assets/js/plugin/material-scrolltop.js"
-    import "../../assets/js/plugin/price_range_script.js"
-    import "../../assets/js/plugin/in-number.js"
-    import "../../assets/js/plugin/jquery.elevateZoom-3.0.8.min.js"
-    import "../../assets/js/plugin/venobox.min.js"
+    import CartList from "../../components/content/CartList";
+    import {getWareByCart,deleteWareByCart} from '../../network/api'
     export default {
-        name: "cart"
+        name:'Cart',
+        data() {
+            return {
+                tableHeaders: [
+                    { size: 3, title: '全选' },
+                    { size: 9, title: '商品信息' },
+                    { size: 3, title: '单价' },
+                    { size: 3, title: '数量' },
+                    { size: 3, title: '金额' },
+                    { size: 3, title: '操作' },
+                ],
+                allChecked: false,
+                checkedList:[],
+                list:[],
+                sum: 0
+            }
+        },
+
+        components: {
+            CartList
+        },
+
+        computed: {
+            Ids() {
+                let ids = [];
+                this.list.forEach(value => {
+                    ids.push(value.id);
+                })
+                return ids;
+            },
+            number() {
+                return this.checkedList.length;
+            }
+        },
+
+       watch: {
+            checkedList(val) {
+                this.sum = 0;
+                val.forEach(id => {
+                    let ware = this.$refs.list.find(value => value.id === id);
+                    this.sum += ware.price * ware.number;
+                })
+            }
+        },
+        methods: {
+            handleCheckAllChange(val) {
+                this.checkedList = val?this.Ids:[];
+            },
+
+            handleCheckedChange(val) {
+                this.allChecked = val.length === this.list.length;
+            },
+
+            getWare() {
+                getWareByCart({ userId: this.$store.state.user.telephone }).then(res => {
+                    if(res.code === 20000) {
+                        this.list = res.data;
+                    }
+                }).catch(err => {
+                    this.$message.error("数据获取失败")
+                })
+            },
+
+            deleteWare(id) {
+                deleteWareByCart({ userId: this.$store.state.user.telephone, wareId: id}).then(res => {
+                    if(res.code === 20000) {
+                        this.$message({
+                            type: "success",
+                            message: "删除成功"
+                        });
+                        this.getWare();
+                    } else {
+                        this.$message.error("删除失败")
+                    }
+                }).catch(err => {
+                    this.$message.error("网络错误")
+                });
+            },
+
+            addLove() {
+                if(this.checkedList.length === 0) {
+                    this.$message.error("请选择宝贝");
+                }
+            },
+
+            deleteCart() {
+                if(this.checkedList.length === 0) {
+                    this.$message.error("请选择宝贝");
+                }
+            },
+
+            getSum() {
+                this.sum = 0;
+                this.checkedList.forEach(id => {
+                    let ware = this.$refs.list.find(value => value.id === id);
+                    this.sum += ware.price * ware.number;
+                })
+            }
+        },
+        created() {
+            this.getWare()
+        }
     }
 </script>
 
 <style scoped>
-    @import "../../assets/css/vendor/jquery-ui.min.css";
-    @import "../../assets/css/vendor/fontawesome.css";
-    @import "../../assets/css/vendor/plaza-icon.css";
-    @import "../../assets/css/vendor/bootstrap.min.css";
-    @import "../../assets/css/plugin/swiper.min.css";
-    @import "../../assets/css/plugin/material-scrolltop.css";
-    @import "../../assets/css/plugin/price_range_style.css";
-    @import "../../assets/css/plugin/in-number.css";
-    @import "../../assets/css/plugin/venobox.min.css";
-    @import "../../assets/css/main.css";
+    /deep/ .el-menu-item {
+        float: left;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .btn {
+        float: right;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .header {
+        font-size: 14px;
+        color: #606266;
+        font-weight: 500;
+    }
+
+    /deep/ .el-checkbox__label {
+        font-size: 12px
+    }
+
+    .footer {
+        font-size: 12px;
+        color: #3c3c3c;
+        padding-right: 30px;
+        line-height: 40px;
+    }
 </style>

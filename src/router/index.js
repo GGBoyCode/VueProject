@@ -13,7 +13,8 @@ const Forum = () => import('../views/forum/Forum');
 const Detail = () => import('../views/forum/Detail');
 const Interview = () => import('../views/forum/Interview');
 const Mall = () => import('../views/mall/mall')
-const MallDetail = () => import('../views/mall/detail')
+const OldMallDetail = () => import('../views/mall/detail')
+const MallDetail = () => import('../views/mall/WareDetail')
 const Cart = () => import('../views/mall/cart')
 
 const routes = [
@@ -88,6 +89,11 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: Cart
+  },
+  {
+    path: '/mall/oldDetail',
+    name: 'oldDetail',
+    component: OldMallDetail
   }
 ]
 

@@ -7,22 +7,24 @@
             </el-carousel-item>
         </el-carousel>
 
-        <recommend title="热门推荐"></recommend>
+        <recommend :ware-list="hotList" title="热门推荐"></recommend>
         <el-divider></el-divider>
-        <recommend title="最新上架"></recommend>
+        <recommend :ware-list="recommendList" title="最新上架"></recommend>
     </div>
 </template>
 
 <script>
     import Recommend from './Recommend'
-    import {getCarousels} from '../../network/api.js'
+    import {getCarousels, getAllWare} from '../../network/api.js'
     export default {
         name: "Home",
         data(){
             return {
                 Hot:'1',
                 list:[],
-                url:'/api/'
+                url:'/api/',
+                hotList: [],
+                recommendList: []
             }
         },
 
@@ -33,9 +35,26 @@
         created() {
             getCarousels(null).then(res => {
                 if(res.code == 20000) {
-                    console.log(res.data);
                     this.list = res.data;
                 }
+            }).catch(err => {
+                this.$message.error("数据获取失败")
+            });
+
+            getAllWare().then(res => {
+                if(res.code == 20000) {
+                    res.data.forEach((value, index) => {
+                        if(index < 8) {
+                            this.hotList.push(value);
+                        } else if(index < 16) {
+                            this.recommendList.push(value);
+                        }
+                    });
+                    console.log(this.hotList);
+                    console.log(this.recommendList);
+                }
+            }).catch(err => {
+                this.$message.error("数据获取失败")
             })
         }
     }

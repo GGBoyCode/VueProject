@@ -15,14 +15,14 @@
 
                 <!--商品-->
                 <el-row class="rec-body" :gutter="20">
-                    <template v-for="n in 8">
+                    <template v-for="ware in wareList">
                         <el-col :xs="12" :sm="8" :md="6">
-                            <el-card :body-style="{ padding: '0px' }">
-                                <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-                                <div style="padding: 14px;">
-                                    <span>好吃的汉堡</span>
-                                </div>
-                            </el-card>
+                            <ware
+                                :title="ware.name"
+                                :price="ware.price"
+                                :src="$store.state.path + '/' + ware.url"
+                                @click="toDetail(ware.id)">
+                            </ware>
                         </el-col>
                     </template>
                 </el-row>
@@ -32,18 +32,36 @@
 </template>
 
 <script>
+    import Ware from "../../components/common/Ware";
     export default {
         name: "Recommend",
         props:{
             title:{
-                type:String,
+                type: String,
                 default:'推荐'
+            },
+            wareList: {
+                type: Array,
+                default: []
             }
         },
         data(){
             return {
                 rec:'1'
             }
+        },
+        methods: {
+            toDetail(id) {
+                this.$router.push({
+                    path: '/mall/detail',
+                    query: {
+                        id: id
+                    }
+                });
+            }
+        },
+        components: {
+            Ware
         }
     }
 </script>

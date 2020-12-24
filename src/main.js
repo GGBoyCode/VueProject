@@ -16,10 +16,13 @@ import { ImageDrop } from "quill-image-drop-module";
 Quill.register("modules/imageDrop", ImageDrop);
 Quill.register("modules/imageResize", ImageResize); // 注册
 
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/swiper-bundle.css'
+
 import $ from "jquery"
 
 Vue.config.productionTip = false
-
+Vue.use(VueAwesomeSwiper)
 Vue.use(Element)
 Vue.use(VueQuillEditor)
 new Vue({

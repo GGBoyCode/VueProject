@@ -60,25 +60,34 @@
                         <div class="product-tab-area">
                             <div class="tab-content ">
                                 <div class="tab-pane show active clearfix" id="sort-grid">
-
-                                    <div v-for="n in 12" class="product__box product__box--default product__box--border-hover text-center float-left float-4">
+                                    <el-row>
+                                        <el-col :span="6" v-for="l in list">
+                                            <ware
+                                                :src="$store.state.path + '/' + l.url"
+                                                :title="l.name"
+                                                :price="l.price"
+                                                @click="toDetail(l.id)">
+                                            </ware>
+                                        </el-col>
+                                    </el-row>
+                                    <!--<div v-for="n in 12" class="product__box product__box&#45;&#45;default product__box&#45;&#45;border-hover text-center float-left float-4">
                                         <div class="product__img-box">
-                                            <a href="Details.html" class="product__img--link">
+                                            <router-link to="/mall/detail" class="product__img&#45;&#45;link">
                                                 <img class="product__img" src="../../assets/img/banner/diaoshi.jpg" alt="">
-                                            </a>
+                                            </router-link>
 
-                                            <a href="#modalAddCart" data-toggle="modal" class="btn btn--box btn--small btn--gray btn--uppercase btn--weight btn--hover-zoom product__upper-btn">添加到购物车</a>
-                                            <span class="product__tag product__tag--discount">-12%</span>
+                                            <a href="#modalAddCart" data-toggle="modal" class="btn btn&#45;&#45;box btn&#45;&#45;small btn&#45;&#45;gray btn&#45;&#45;uppercase btn&#45;&#45;weight btn&#45;&#45;hover-zoom product__upper-btn">添加到购物车</a>
+                                            <span class="product__tag product__tag&#45;&#45;discount">-12%</span>
                                             <a href="wishlist.html" class="product__wishlist-icon"><i class="icon-heart"></i></a>
                                         </div>
                                         <div class="product__price m-t-10">
                                             <span class="product__price-del">¥11.90</span>
                                             <span class="product__price-reg">¥10.71</span>
                                         </div>
-                                        <a href="Details.html" class="product__link product__link--underline product__link--weight-light m-t-15">
+                                        <a href="Details.html" class="product__link product__link&#45;&#45;underline product__link&#45;&#45;weight-light m-t-15">
                                             商品简介：家居装饰及灯饰系列产品
                                         </a>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <!--
                                     作者：1016226614@qq.com
@@ -132,33 +141,17 @@
                             时间：2020-11-26
                             描述：第六部分  翻页
                         -->
-                        <div class="page-pagination">
-
-                            <ul class="page-pagination__list">
-                                <li class="page-pagination__item">
-                                    <a class="page-pagination__link btn btn--gray" href="#"><i class="icon-chevron-left"></i> 上一页</a>
-                                </li>
-                                <li class="page-pagination__item">
-                                    <a class="page-pagination__link active btn btn--gray" href="#">1</a>
-                                </li>
-                                <li class="page-pagination__item">
-                                    <a class="page-pagination__link btn btn--gray" href="#">2</a>
-                                </li>
-                                <li class="page-pagination__item">
-                                    <a class="page-pagination__link btn btn--gray" href="#">3</a>
-                                </li>
-                                <li class="page-pagination__item">
-                                    <a class="page-pagination__link btn btn--gray" href="#">4</a>
-                                </li>
-                                <li class="page-pagination__item">
-                                    <a class="page-pagination__link btn btn--gray" href="#">5</a>
-                                </li>
-
-                                <li class="page-pagination__item">
-                                    <a class="page-pagination__link btn btn--gray" href="#">下一页<i class="icon-chevron-right"></i></a>
-                                </li>
-                            </ul>
-                        </div>
+                        <el-row type="flex" justify="center" style="margin: 20px 0">
+                            <el-pagination
+                                :page-size="limit"
+                                :current-page="page"
+                                background
+                                layout="prev, pager, next"
+                                :total="total"
+                                @current-change="currentChange"
+                            >
+                            </el-pagination>
+                        </el-row>
                     </div>
                 </div>
             </div>
@@ -228,9 +221,54 @@
     import "../../assets/js/plugin/in-number.js"
     import "../../assets/js/plugin/jquery.elevateZoom-3.0.8.min.js"
     import "../../assets/js/plugin/venobox.min.js"
+    import Ware from "../../components/common/Ware";
+    import {getAllWare} from "../../network/api";
     // import "../../assets/js/main.js"
     export default {
-        name: "mall"
+        name: "mall",
+        data() {
+            return {
+                page: 0,
+                limit: 12,
+                total: 0,
+                totalList: [],
+                list: []
+            }
+        },
+        components: {
+            Ware
+        },
+        methods: {
+            toDetail(id) {
+                this.$router.push({
+                    path: '/mall/detail',
+                    query: {
+                        id: id
+                    }
+                });
+            },
+            currentChange(page) {
+                this.list = [];
+                page -= 1;
+                for(let i = page * 12;i < this.totalList.length && i < (page + 1) *12;i++) {
+                    this.list.push(this.totalList[i]);
+                }
+            }
+        },
+        created() {
+            getAllWare().then(res => {
+                if(res.code == 20000) {
+                    this.total = res.data.length;
+                    this.totalList = res.data;
+                    for(let i = 0;i < this.totalList.length && i < 12;i++) {
+                        this.list.push(this.totalList[i]);
+                    }
+                    console.log(this.list);
+                }
+            }).catch(err => {
+                this.$message.error("数据获取失败")
+            })
+        }
     }
 </script>
 

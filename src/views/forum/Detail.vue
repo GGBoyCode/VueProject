@@ -64,7 +64,7 @@
             }
         },
 
-        components:{
+        components: {
             ArticleCard,
             CommentCard,
             Editor

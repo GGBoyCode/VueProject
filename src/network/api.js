@@ -24,3 +24,13 @@ export const addComment = params => post('/comment/add', params);
 export const getComment = params => post('/comment/get', params)
 //获取评论数
 export const getCommentCount = params => post('/comment/count', params)
+//获取商品
+export const getAllWare = params => post('/ware', params)
+//获取指定商品
+export const getWareById = params => post('/ware/get', params)
+//获取购物车商品
+export const getWareByCart = params => get('/shoppingCart/get', params)
+//删除购物车商品
+export const deleteWareByCart = params => post('/shoppingCart/delete', params)
+//添加进入购物车
+export const addWareToCart = params => post('/shoppingCart/add', params)
